@@ -1,11 +1,11 @@
 package orbartal.interview.gosecure.logic.model;
 
-public class WordCount2 {
+public class WordCount {
 
 	private final String word;
 	private final Long count;
 
-	public WordCount2(String word, Long count) {
+	public WordCount(String word, Long count) {
 		this.word = word;
 		this.count = count;
 	}
