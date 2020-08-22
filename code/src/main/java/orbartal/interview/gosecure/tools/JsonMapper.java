@@ -1,34 +1,27 @@
 package orbartal.interview.gosecure.tools;
 
-import org.springframework.stereotype.Service;
+import java.util.Map.Entry;
+
+import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonObject;
 
-import orbartal.interview.gosecure.logic.model.WordCount;
-import reactor.core.publisher.Flux;
+import orbartal.interview.gosecure.logic.model.CountByKey;
 import reactor.core.publisher.Mono;
 
-@Service
+@Component
 public class JsonMapper {
 
-	public Mono<String> readJson(Flux<Mono<WordCount>> input) {
-		Flux<WordCount> counts = input.map(wc->wc.flux()).flatMap(s->s);
-		Mono<Aggregator> mono = counts.reduce(new Aggregator(), (a, wc)->a.add(wc));
-		return mono.map(x->x.toString());
+	public Mono<String> readJson(Mono<CountByKey> input) {
+		return input.map(m->toJson(m)).map(x->x.toString());
 	}
 
-	private static class Aggregator {
-
-		private JsonObject json = new JsonObject();
-		
-		public Aggregator add (WordCount wc) {
-			json.addProperty(wc.getWord(), wc.getCount());
-			return this;
+	private JsonObject toJson(CountByKey m) {
+		JsonObject r = new JsonObject();
+		for (Entry<String, Long> e : m.entrySet()) {
+			r.addProperty(e.getKey(), e.getValue());
 		}
-		
-		public String toString() {
-			return json.toString();
-		}
+		return r;
 	}
 
 }

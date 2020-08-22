@@ -4,7 +4,7 @@ import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
 
 import orbartal.interview.gosecure.logic.WordReader;
-import orbartal.interview.gosecure.logic.model.WordCount;
+import orbartal.interview.gosecure.logic.model.CountByKey;
 import orbartal.interview.gosecure.tools.FileReader;
 import orbartal.interview.gosecure.tools.JsonMapper;
 import reactor.core.publisher.Flux;
@@ -25,7 +25,7 @@ public class ClassifierApplication {
 
 	public Mono<String> analysis(Mono<FilePart> input) {
 		Flux<String> lines = this.fileReader.readLines(input);
-		Flux<Mono<WordCount>> countWords = this.wordReader.countWords(lines);
+		Mono<CountByKey> countWords = this.wordReader.countWords(lines);
 		return this.jsonMapper.readJson(countWords);
 	}
 

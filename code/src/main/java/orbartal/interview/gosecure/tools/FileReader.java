@@ -17,8 +17,10 @@ import reactor.util.function.Tuple3;
 @Component
 public class FileReader {
 
-	private static final String SPACE_OR_EOL = "\\r?\\n";
 	private static final String EOL = "\n";
+	private static final String CR = "\\r";
+	private static final String CR_EOL = "\\r\\n";
+	private static final String SPACE_OR_EOL = "\\r?\\n";
 
 	public Flux<String> readLines(Mono<FilePart> input) {
 		return input.flatMapMany(fp -> readLinesFromFile(fp));
@@ -31,7 +33,7 @@ public class FileReader {
 	}
 
 	private String eol(String s) {
-		return s.replaceAll("\\r\\n", EOL).replaceAll("\\r", EOL);
+		return s.replaceAll(CR_EOL, EOL).replaceAll(CR, EOL);
 	}
 
 	private String buildString(DataBuffer dataBuffer) {

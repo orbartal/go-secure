@@ -5,24 +5,17 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import orbartal.interview.gosecure.logic.model.WordCount;
+import orbartal.interview.gosecure.logic.model.CountByKey;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.GroupedFlux;
 import reactor.core.publisher.Mono;
 
 @Component
 public class WordReader {
 
-	public Flux<Mono<WordCount>> countWords(Flux<String> lines) {
+	public Mono<CountByKey> countWords(Flux<String> lines) {
 		Flux<String> words = lines.map(s -> splitLine(s)).flatMapIterable(s -> s);
 		Flux<String> words4 = words.filter(w->w.length()>3);
-		Flux<GroupedFlux<String, String>> groupes = words4.groupBy(s1->s1);
-		return groupes.map(g->getWordCount(g));
-
-	}
-
-	private Mono<WordCount> getWordCount(GroupedFlux<String, String> g) {
-		return g.count().map(c->new WordCount(g.key(), c));
+		return words4.reduce(new CountByKey(), (a, s)->a.increase(s));
 	}
 
 	private List<String> splitLine(String s) {

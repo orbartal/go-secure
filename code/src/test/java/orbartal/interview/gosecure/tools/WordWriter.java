@@ -2,22 +2,14 @@ package orbartal.interview.gosecure.tools;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import orbartal.interview.gosecure.logic.model.CountByKey;
 
 public class WordWriter {
 
 	private static final String UTF_8 = "UTF-8";
-
-	@SuppressWarnings("serial")
-	private static class CountByKey extends HashMap<String, Long> {
-		public void increase (String key) {
-			Long value = this.get(key);
-			value = (value!=null)? value : 0L;
-			this.put(key, value + 1L);
-		}
-	}
 
 	private static class MyPrintWriter extends PrintWriter implements AutoCloseable {
 
