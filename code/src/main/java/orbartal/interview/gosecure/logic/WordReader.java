@@ -14,7 +14,7 @@ public class WordReader {
 
 	public Mono<CountByKey> countWords(Flux<String> lines) {
 		Flux<String> words = lines.map(s -> splitLine(s)).flatMapIterable(s -> s);
-		Flux<String> words4 = words.filter(w->w.length()>3);
+		Flux<String> words4 = words.filter(w->w.length()>3).map(s->s.toLowerCase());
 		return words4.reduce(new CountByKey(), (a, s)->a.increase(s));
 	}
 

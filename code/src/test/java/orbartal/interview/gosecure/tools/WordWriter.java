@@ -42,7 +42,9 @@ public class WordWriter {
 			int index = (int)(Math.random() * wordsMaxIndex);
 			String w = words.get(index);
 			this.print(w + " ");
-			countByWord.increase(w);
+			if (w.length()>3) {
+				countByWord.increase(w.toLowerCase());
+			}
 		}
 
 		public Map<String, Long> getCountByWord() {

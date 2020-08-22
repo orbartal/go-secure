@@ -110,6 +110,30 @@ public class ClassifierControllerTest {
 		testClassifierCountWords(path, sizeInBytes, words);
 	}
 
+	@Test
+	public void testOneSmallFileWithNotCaseSensitive () {
+		List<String> words = Arrays.asList("Abcd", "aBcd", "abcd", "ABCD");
+		String path = Configuration.get().getPathToSmallFile();
+		int sizeInBytes = 1000;
+		testClassifierCountWords(path, sizeInBytes, words);
+	}
+	
+	@Test
+	public void testOneSmallFileWithFilterByWordSize () {
+		List<String> words = Arrays.asList("abcd", "abc", "a", "dc");
+		String path = Configuration.get().getPathToSmallFile();
+		int sizeInBytes = 1000;
+		testClassifierCountWords(path, sizeInBytes, words);
+	}
+	
+	@Test
+	public void testOneSmallFileWithFilterBlancks () {
+		List<String> words = Arrays.asList("abcd", " ", "  ");
+		String path = Configuration.get().getPathToSmallFile();
+		int sizeInBytes = 1000;
+		testClassifierCountWords(path, sizeInBytes, words);
+	}
+
 	private List<String> readRandomWords(int size) {
 		return IntStream.range(1, size).boxed().map(i->UUID.randomUUID().toString()).collect(Collectors.toList());
 	}
