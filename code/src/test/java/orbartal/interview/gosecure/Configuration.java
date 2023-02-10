@@ -2,6 +2,7 @@ package orbartal.interview.gosecure;
 
 import java.io.File;
 import java.io.InputStream;
+import java.nio.file.FileSystems;
 import java.util.Properties;
 
 public class Configuration {
@@ -62,7 +63,7 @@ public class Configuration {
 	
 	public String getPath(String key) {
 		String filename = properties.get(key).toString();
-		return PATH_TO_FILES + File.separator + filename;
+		return PATH_TO_FILES + FileSystems.getDefault().getSeparator() + filename;
 	}
 
 }
