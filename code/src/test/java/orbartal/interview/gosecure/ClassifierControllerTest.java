@@ -58,7 +58,7 @@ public class ClassifierControllerTest {
 	@Test
 	public void testManySmallFilesInSequence() {
 		for (int i=0; i<100; i++) {
-			assist.testOneFile(PATH_TO_SMALL_FILE, i);
+			assist.testClassifierCountWordsOnWeekDaysAsWords(PATH_TO_SMALL_FILE+i, KB1);
 		}
 	}
 
@@ -66,7 +66,8 @@ public class ClassifierControllerTest {
 	public void testManySmallFilesInParallel () throws Exception {
 		ForkJoinPool myPool = new ForkJoinPool(20);
 		myPool.submit(() ->
-			IntStream.range(1, 100).boxed().parallel().forEach(i->assist.testOneFile(PATH_TO_SMALL_FILE, i))
+			IntStream.range(1, 100).boxed().parallel().forEach
+			(i->assist.testClassifierCountWordsOnWeekDaysAsWords(PATH_TO_SMALL_FILE+i, KB1))
 		).get();
 	}
 	
