@@ -19,6 +19,11 @@ import io.restassured.RestAssured;
 @Ignore
 public class ClassifierControllerTest {
 
+	private static final int KB1 = 1000;
+	private static final int MB1 = 1000 * KB1;
+	private static final int MB100 = 100 * MB1;
+	private static final int GB1 =  1000 * MB1;
+
 	private final ClassifierTesterAssist assist = new ClassifierTesterAssist();
 
 	public ClassifierControllerTest() {
@@ -28,29 +33,25 @@ public class ClassifierControllerTest {
 	@Test
 	public void testOneSmallFile() {
 		String path = Configuration.get().getPathToSmallFile();
-		int sizeInBytes = 1000;
-		assist.testClassifierCountWordsOnWeekDaysAsWords(path, sizeInBytes);
+		assist.testClassifierCountWordsOnWeekDaysAsWords(path, KB1);
 	}
 
 	@Test
 	public void testOneMediumFile() {
 		String path = Configuration.get().getPathToMediumFile();
-		int sizeInBytes = 1000 * 1000;
-		assist.testClassifierCountWordsOnWeekDaysAsWords(path, sizeInBytes);
+		assist.testClassifierCountWordsOnWeekDaysAsWords(path, MB1);
 	}
 
 	@Test
 	public void testOneLargeFile() {
 		String path = Configuration.get().getPathToLargeFile();
-		int sizeInBytes = 1000 * 1000 * 100;
-		assist.testClassifierCountWordsOnWeekDaysAsWords(path, sizeInBytes);
+		assist.testClassifierCountWordsOnWeekDaysAsWords(path, MB100);
 	}
 
 	@Test
 	public void testOneHugeFile() throws FileNotFoundException, UnsupportedEncodingException {
 		String path = Configuration.get().getPathToHugeFile();
-		int sizeInBytes = 1000 * 1000 * 1000;
-		assist.testClassifierCountWordsOnWeekDaysAsWords(path, sizeInBytes);
+		assist.testClassifierCountWordsOnWeekDaysAsWords(path, GB1);
 	}
 	
 	@Test
@@ -74,16 +75,14 @@ public class ClassifierControllerTest {
 	public void testOneSmallFileWithManyWords () throws Exception {
 		List<String> words = readRandomWords(100);
 		String path = Configuration.get().getPathToSmallFile();
-		int sizeInBytes = 1000;
-		assist.testClassifierCountWordsWithWordList(path, sizeInBytes, words);
+		assist.testClassifierCountWordsWithWordList(path, KB1, words);
 	}
 	
 	@Test
 	public void testOneLargeFileWithManyWords () throws Exception {
 		List<String> words = readRandomWords(1000 * 10);
 		String path = Configuration.get().getPathToLargeFile();
-		int sizeInBytes = 1000 * 1000 * 100;
-		assist.testClassifierCountWordsWithWordList(path, sizeInBytes, words);
+		assist.testClassifierCountWordsWithWordList(path, MB100, words);
 	}
 
 	//Oxford Dictionary define 273,000 words
@@ -91,32 +90,28 @@ public class ClassifierControllerTest {
 	public void testOneHugeFileWithManyWords () throws Exception {
 		List<String> words = readRandomWords(1000 * 273);
 		String path = Configuration.get().getPathToLargeFile();
-		int sizeInBytes = 1000 * 1000 * 1000;
-		assist.testClassifierCountWordsWithWordList(path, sizeInBytes, words);
+		assist.testClassifierCountWordsWithWordList(path, GB1, words);
 	}
 
 	@Test
 	public void testOneSmallFileWithNotCaseSensitive () {
 		List<String> words = Arrays.asList("Abcd", "aBcd", "abcd", "ABCD");
 		String path = Configuration.get().getPathToSmallFile();
-		int sizeInBytes = 1000;
-		assist.testClassifierCountWordsWithWordList(path, sizeInBytes, words);
+		assist.testClassifierCountWordsWithWordList(path, KB1, words);
 	}
 	
 	@Test
 	public void testOneSmallFileWithFilterByWordSize () {
 		List<String> words = Arrays.asList("abcd", "abc", "a", "dc");
 		String path = Configuration.get().getPathToSmallFile();
-		int sizeInBytes = 1000;
-		assist.testClassifierCountWordsWithWordList(path, sizeInBytes, words);
+		assist.testClassifierCountWordsWithWordList(path, KB1, words);
 	}
 	
 	@Test
 	public void testOneSmallFileWithFilterBlancks () {
 		List<String> words = Arrays.asList("abcd", " ", "  ");
 		String path = Configuration.get().getPathToSmallFile();
-		int sizeInBytes = 1000;
-		assist.testClassifierCountWordsWithWordList(path, sizeInBytes, words);
+		assist.testClassifierCountWordsWithWordList(path, KB1, words);
 	}
 
 	private List<String> readRandomWords(int size) {
